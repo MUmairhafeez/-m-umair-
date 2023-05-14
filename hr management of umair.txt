@@ -1,0 +1,70 @@
+-- Employees table
+CREATE TABLE employees (
+  employee_id INT PRIMARY KEY,
+  first_name VARCHAR(50),
+  last_name VARCHAR(50),
+  email VARCHAR(100),
+  phone_number VARCHAR(20),
+  hire_date DATE,
+  job_id VARCHAR(10),
+  salary DECIMAL(8, 2),
+  commission_pct DECIMAL(2, 2),
+  manager_id INT,
+  department_id INT
+);
+
+-- History table
+CREATE TABLE employee_history (
+  history_id INT PRIMARY KEY,
+  employee_id INT,
+  history_date DATE,
+  job_id VARCHAR(10),
+  department_id INT,
+  CONSTRAINT fk_employee_history_employee
+    FOREIGN KEY (employee_id) REFERENCES employees (employee_id)
+);
+
+-- Roles table
+CREATE TABLE roles (
+  role_id INT PRIMARY KEY,
+  role_name VARCHAR(50)
+);
+
+-- Authorities table
+CREATE TABLE authorities (
+  authority_id INT PRIMARY KEY,
+  authority_name VARCHAR(50)
+);
+
+-- Employee_Roles table
+CREATE TABLE employee_roles (
+  employee_id INT,
+  role_id INT,
+  PRIMARY KEY (employee_id, role_id),
+  CONSTRAINT fk_employee_roles_employee
+    FOREIGN KEY (employee_id) REFERENCES employees (employee_id),
+  CONSTRAINT fk_employee_roles_roles
+    FOREIGN KEY (role_id) REFERENCES roles (role_id)
+);
+
+-- Employee_Authorities table
+CREATE TABLE employee_authorities (
+  employee_id INT,
+  authority_id INT,
+  PRIMARY KEY (employee_id, authority_id),
+  CONSTRAINT fk_employee_authorities_employee
+    FOREIGN KEY (employee_id) REFERENCES employees (employee_id),
+  CONSTRAINT fk_employee_authorities_authorities
+    FOREIGN KEY (authority_id) REFERENCES authorities (authority_id)
+);
+
+-- Assignments table
+CREATE TABLE assignments (
+  assignment_id INT PRIMARY KEY,
+  assignment_name VARCHAR(50),
+  employee_id INT,
+  start_date DATE,
+  end_date DATE,
+  CONSTRAINT fk_assignments_employee
+    FOREIGN KEY (employee_id) REFERENCES employees (employee_id)
+);
